@@ -22,18 +22,40 @@ func main() {
 	// migrate struct to database
 	db.AutoMigrate(&book.Book{})
 
-	// create every running server
-	book := book.Book{}
-	book.Title = "Buku kedua"
-	book.Price = 120000
-	book.Rating = 5
-	book.Description = "Ini adalah deskripsi buku kedua"
+	/**
+	CREATE DATA
+	create data every running server.
+	*/
+	// book := book.Book{}
+	// book.Title = "Buku kedua"
+	// book.Price = 120000
+	// book.Rating = 5
+	// book.Description = "Ini adalah deskripsi buku kedua"
 
-	err = db.Create(&book).Error
+	// err = db.Create(&book).Error
+	// if err != nil {
+	// 	fmt.Println("=========================")
+	// 	fmt.Println("Failed create book record")
+	// 	fmt.Println("=========================")
+	// }
+
+	/**
+	READ DATA
+	*/
+	var books []book.Book
+
+	// run & print query or error
+	err = db.Debug().Where("id = ?", 1).Find(&books).Error
 	if err != nil {
 		fmt.Println("=========================")
-		fmt.Println("Failed create book record")
+		fmt.Println("Failed find book record")
 		fmt.Println("=========================")
+	}
+
+	// get data by query
+	for _, book := range books {
+		fmt.Println("Title: ", book.Title)
+		fmt.Printf("Book Object: %v", book)
 	}
 
 	router := gin.Default()
