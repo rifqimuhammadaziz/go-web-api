@@ -42,21 +42,51 @@ func main() {
 	/**
 	READ DATA
 	*/
-	var books []book.Book
+	// var books []book.Book
 
-	// run & print query or error
-	err = db.Debug().Where("id = ?", 1).Find(&books).Error
+	// // run & print query or error
+	// err = db.Debug().Where("id = ?", 1).Find(&books).Error
+	// if err != nil {
+	// 	fmt.Println("=========================")
+	// 	fmt.Println("Failed find book record")
+	// 	fmt.Println("=========================")
+	// }
+
+	// // get data by query
+	// for _, book := range books {
+	// 	fmt.Println("Title: ", book.Title)
+	// 	fmt.Printf("Book Object: %v", book)
+	// }
+
+	// get data
+	var book book.Book
+	err = db.Debug().Where("id = ?", 1).First(&book).Error
 	if err != nil {
 		fmt.Println("=========================")
 		fmt.Println("Failed find book record")
 		fmt.Println("=========================")
 	}
 
-	// get data by query
-	for _, book := range books {
-		fmt.Println("Title: ", book.Title)
-		fmt.Printf("Book Object: %v", book)
-	}
+	/**
+	UPDATE DATA
+	*/
+	// book.Title = "Buku kesatu diupdate" // request
+	// err = db.Save(&book).Error          // update
+	// if err != nil {
+	// 	fmt.Println("=========================")
+	// 	fmt.Println("Failed update book record")
+	// 	fmt.Println("=========================")
+	// }
+
+	/**
+	DELETE DATA
+	*/
+	// err = db.Delete(&book).Error
+	// if err != nil {
+	// 	fmt.Println("=========================")
+	// 	fmt.Println("Failed delete book record")
+	// 	fmt.Println("=========================")
+	// }
 
 	router := gin.Default()
 
