@@ -30,14 +30,8 @@ func (h *bookHandler) GetBooks(c *gin.Context) {
 	// output data using struct BookResponse
 	var booksResponse []book.BookResponse
 	for _, b := range books {
-		// get data
-		bookResponse := book.BookResponse{
-			ID:          b.ID,
-			Title:       b.Title,
-			Price:       b.Price,
-			Description: b.Description,
-			Rating:      b.Rating,
-		}
+		// get data using struct BookResponse and save to var bookResponse
+		bookResponse := convertToBookResponse(b)
 		// each data append to slice (array)
 		booksResponse = append(booksResponse, bookResponse)
 	}
@@ -60,20 +54,14 @@ func (h *bookHandler) GetBook(c *gin.Context) {
 	}
 
 	// output data using struct BookResponse
-	bookResponse := book.BookResponse{
-		ID:          b.ID,
-		Title:       b.Title,
-		Price:       b.Price,
-		Description: b.Description,
-		Rating:      b.Rating,
-	}
+	bookResponse := convertToBookResponse(b)
 	c.JSON(http.StatusOK, gin.H{
 		"data": bookResponse,
 	})
 }
 
 // Create book data
-func (h *bookHandler) PostBooksHandler(c *gin.Context) {
+func (h *bookHandler) CreateBook(c *gin.Context) {
 	var bookRequest book.BookRequest
 
 	err := c.ShouldBindJSON(&bookRequest)
@@ -98,4 +86,15 @@ func (h *bookHandler) PostBooksHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"data": book,
 	})
+}
+
+// output data using struct BookResponse
+func convertToBookResponse(b book.Book) book.BookResponse {
+	return book.BookResponse{
+		ID:          b.ID,
+		Title:       b.Title,
+		Price:       b.Price,
+		Description: b.Description,
+		Rating:      b.Rating,
+	}
 }
