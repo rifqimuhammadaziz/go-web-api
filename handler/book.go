@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"myweb-api/book"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -43,6 +44,31 @@ func (h *bookHandler) GetBooks(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": booksResponse,
+	})
+}
+
+func (h *bookHandler) GetBook(c *gin.Context) {
+	idString := c.Param("id")       // get id from url (localhost/books/:id)
+	id, _ := strconv.Atoi(idString) // convert string id to string int
+
+	b, err := h.bookService.FindById(id) // get data by id
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"errors": err,
+		})
+		return
+	}
+
+	// output data using struct BookResponse
+	bookResponse := book.BookResponse{
+		ID:          b.ID,
+		Title:       b.Title,
+		Price:       b.Price,
+		Description: b.Description,
+		Rating:      b.Rating,
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": bookResponse,
 	})
 }
 
