@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"myweb-api/book"
 	"myweb-api/handler"
@@ -23,10 +22,14 @@ func main() {
 	db.AutoMigrate(&book.Book{})
 
 	bookRepository := book.NewRepository(db)
-	books, err := bookRepository.FindAll()
-	for _, book := range books {
-		fmt.Println(book)
+	book := book.Book{
+		Title:       "Bumi Manusia",
+		Description: "Ini adalah deskripsi",
+		Price:       560000,
+		Rating:      5,
 	}
+
+	bookRepository.Create(book)
 
 	router := gin.Default()
 
